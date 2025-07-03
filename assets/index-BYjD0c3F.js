@@ -21425,10 +21425,16 @@ const queryClient = new QueryClient();
 const App = () => /* @__PURE__ */ jsxRuntimeExports.jsx(QueryClientProvider, { client: queryClient, children: /* @__PURE__ */ jsxRuntimeExports.jsxs(TooltipProvider, { children: [
   /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster$1, {}),
   /* @__PURE__ */ jsxRuntimeExports.jsx(Toaster, {}),
-  /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, { children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Routes, { children: [
+  /* @__PURE__ */ jsxRuntimeExports.jsx(BrowserRouter, { basename: "/collaborative-class-platform/", children: /* @__PURE__ */ jsxRuntimeExports.jsxs(Routes, { children: [
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/", element: /* @__PURE__ */ jsxRuntimeExports.jsx(Index, {}) }),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/space/:spaceId", element: /* @__PURE__ */ jsxRuntimeExports.jsx(SpaceDetail, {}) }),
-    /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "/space/:spaceId/sheet/:sheetDate", element: /* @__PURE__ */ jsxRuntimeExports.jsx(DailySheet, {}) }),
+    /* @__PURE__ */ jsxRuntimeExports.jsx(
+      Route,
+      {
+        path: "/space/:spaceId/sheet/:sheetDate",
+        element: /* @__PURE__ */ jsxRuntimeExports.jsx(DailySheet, {})
+      }
+    ),
     /* @__PURE__ */ jsxRuntimeExports.jsx(Route, { path: "*", element: /* @__PURE__ */ jsxRuntimeExports.jsx(NotFound, {}) })
   ] }) })
 ] }) });
