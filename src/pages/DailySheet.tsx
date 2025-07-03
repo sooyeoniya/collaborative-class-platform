@@ -183,9 +183,10 @@ const DailySheet = () => {
           </div>
         </div>
 
-        <div className="grid lg:grid-cols-3 gap-6">
+        {/* Responsive Layout */}
+        <div className="flex flex-col xl:grid xl:grid-cols-3 gap-6">
           {/* Sheet Content */}
-          <div className="lg:col-span-2">
+          <div className="xl:col-span-2 order-1">
             <Card className="bg-white border-gray-200">
               <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-gray-900">
@@ -309,8 +310,8 @@ const DailySheet = () => {
             </Card>
           </div>
 
-          {/* Chat Section */}
-          <div className="lg:col-span-1">
+          {/* Chat Section - Responsive: right side on large screens, bottom on smaller screens */}
+          <div className="xl:col-span-1 order-2">
             <Card className="h-[600px] flex flex-col bg-white border-gray-200">
               <CardHeader className="pb-3">
                 <CardTitle className="flex items-center gap-2 text-gray-900">

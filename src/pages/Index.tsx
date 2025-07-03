@@ -3,8 +3,6 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { BookOpen, Users, MessageSquare, Calendar, GraduationCap, UserCheck } from "lucide-react";
@@ -41,10 +39,10 @@ const Index = () => {
         {/* Header */}
         <header className="text-center mb-16">
           <div className="inline-flex items-center gap-2 mb-6">
-            <div className="w-12 h-12 gradient-education rounded-xl flex items-center justify-center">
+            <div className="w-12 h-12 bg-black rounded-xl flex items-center justify-center">
               <BookOpen className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-3xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+            <h1 className="text-3xl font-bold text-black">
               EduSheet
             </h1>
           </div>
@@ -57,7 +55,7 @@ const Index = () => {
           
           <Dialog>
             <DialogTrigger asChild>
-              <Button size="lg" className="gradient-education text-white hover:opacity-90 transition-opacity">
+              <Button size="lg" className="bg-black text-white hover:bg-gray-800 transition-colors">
                 <UserCheck className="w-5 h-5 mr-2" />
                 플랫폼 시작하기
               </Button>
@@ -80,7 +78,7 @@ const Index = () => {
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
-                <div className="w-12 h-12 gradient-mentor rounded-lg mx-auto mb-2 flex items-center justify-center">
+                <div className="w-12 h-12 bg-black rounded-lg mx-auto mb-2 flex items-center justify-center">
                   <Calendar className="w-6 h-6 text-white" />
                 </div>
                 <CardTitle className="text-lg">수업 공간 관리</CardTitle>
@@ -94,7 +92,7 @@ const Index = () => {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
-                <div className="w-12 h-12 gradient-student rounded-lg mx-auto mb-2 flex items-center justify-center">
+                <div className="w-12 h-12 bg-gray-800 rounded-lg mx-auto mb-2 flex items-center justify-center">
                   <Users className="w-6 h-6 text-white" />
                 </div>
                 <CardTitle className="text-lg">실시간 협업</CardTitle>
@@ -108,7 +106,7 @@ const Index = () => {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
-                <div className="w-12 h-12 gradient-education rounded-lg mx-auto mb-2 flex items-center justify-center">
+                <div className="w-12 h-12 bg-gray-700 rounded-lg mx-auto mb-2 flex items-center justify-center">
                   <MessageSquare className="w-6 h-6 text-white" />
                 </div>
                 <CardTitle className="text-lg">통합 채팅</CardTitle>
@@ -122,7 +120,7 @@ const Index = () => {
 
             <Card className="hover:shadow-lg transition-shadow">
               <CardHeader className="text-center">
-                <div className="w-12 h-12 bg-gradient-to-br from-orange-500 to-red-500 rounded-lg mx-auto mb-2 flex items-center justify-center">
+                <div className="w-12 h-12 bg-gray-600 rounded-lg mx-auto mb-2 flex items-center justify-center">
                   <GraduationCap className="w-6 h-6 text-white" />
                 </div>
                 <CardTitle className="text-lg">역할별 인터페이스</CardTitle>
@@ -152,8 +150,8 @@ const Index = () => {
                   <TabsTrigger value="student">수강생 계정</TabsTrigger>
                 </TabsList>
                 <TabsContent value="mentor" className="space-y-4">
-                  <div className="p-4 bg-blue-50 rounded-lg">
-                    <Badge className="mb-2 gradient-mentor text-white">멘토</Badge>
+                  <div className="p-4 bg-gray-50 rounded-lg">
+                    <Badge className="mb-2 bg-black text-white">멘토</Badge>
                     <div className="space-y-2">
                       <p><strong>이름:</strong> 김지훈</p>
                       <p><strong>전화번호:</strong> 010-1234-5678</p>
@@ -162,20 +160,20 @@ const Index = () => {
                 </TabsContent>
                 <TabsContent value="student" className="space-y-4">
                   <div className="grid gap-4">
-                    <div className="p-4 bg-orange-50 rounded-lg">
-                      <Badge className="mb-2 gradient-student text-white">수강생</Badge>
+                    <div className="p-4 bg-gray-50 rounded-lg">
+                      <Badge className="mb-2 bg-gray-800 text-white">수강생</Badge>
                       <div className="space-y-2">
                         <p><strong>이름:</strong> 박소연</p>
                         <p><strong>전화번호:</strong> 010-2345-6789</p>
                       </div>
                     </div>
-                    <div className="p-4 bg-orange-50 rounded-lg">
+                    <div className="p-4 bg-gray-50 rounded-lg">
                       <div className="space-y-2">
                         <p><strong>이름:</strong> 이민준</p>
                         <p><strong>전화번호:</strong> 010-3456-7890</p>
                       </div>
                     </div>
-                    <div className="p-4 bg-orange-50 rounded-lg">
+                    <div className="p-4 bg-gray-50 rounded-lg">
                       <div className="space-y-2">
                         <p><strong>이름:</strong> 정하은</p>
                         <p><strong>전화번호:</strong> 010-4567-8901</p>

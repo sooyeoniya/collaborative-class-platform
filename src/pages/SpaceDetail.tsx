@@ -15,6 +15,9 @@ const SpaceDetail = () => {
   const [newSheetDate, setNewSheetDate] = useState('');
   const [newSheetTitle, setNewSheetTitle] = useState('');
   const [copiedCode, setCopiedCode] = useState(false);
+  
+  // Mock user role - in real app, this would come from auth context
+  const [userRole] = useState<'mentor' | 'student'>('mentor'); // This should be dynamic
 
   // Mock data - 실제로는 spaceId로 데이터를 가져와야 함
   const spaceData = {
@@ -87,7 +90,7 @@ const SpaceDetail = () => {
         <div className="flex items-center gap-4 mb-6">
           <Button 
             variant="ghost" 
-            onClick={() => navigate(-1)}
+            onClick={() => navigate('/')}
             className="flex items-center gap-2 text-gray-600 hover:text-gray-900"
           >
             <ArrowLeft className="w-4 h-4" />
@@ -121,26 +124,28 @@ const SpaceDetail = () => {
                 <p className="text-sm text-gray-600">멘토</p>
                 <p className="font-medium text-gray-900">{spaceData.instructor}</p>
               </div>
-              <div>
-                <p className="text-sm text-gray-600">초대 코드</p>
-                <div className="flex items-center gap-2">
-                  <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-900">
-                    {spaceData.inviteCode}
-                  </code>
-                  <Button
-                    size="sm"
-                    variant="ghost"
-                    onClick={copyInviteCode}
-                    className="h-8 w-8 p-0"
-                  >
-                    {copiedCode ? (
-                      <Check className="w-4 h-4 text-green-600" />
-                    ) : (
-                      <Copy className="w-4 h-4" />
-                    )}
-                  </Button>
+              {userRole === 'mentor' && (
+                <div>
+                  <p className="text-sm text-gray-600">초대 코드</p>
+                  <div className="flex items-center gap-2">
+                    <code className="bg-gray-100 px-2 py-1 rounded text-sm font-mono text-gray-900">
+                      {spaceData.inviteCode}
+                    </code>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={copyInviteCode}
+                      className="h-8 w-8 p-0"
+                    >
+                      {copiedCode ? (
+                        <Check className="w-4 h-4 text-green-600" />
+                      ) : (
+                        <Copy className="w-4 h-4" />
+                      )}
+                    </Button>
+                  </div>
                 </div>
-              </div>
+              )}
             </div>
           </CardContent>
         </Card>
@@ -148,51 +153,53 @@ const SpaceDetail = () => {
         {/* Daily Sheets Section */}
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-bold text-gray-900">데일리 시트 목록</h2>
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button className="bg-black text-white hover:bg-gray-800">
-                <Plus className="w-4 h-4 mr-2" />
-                새 데일리 시트 만들기
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="max-w-md">
-              <DialogHeader>
-                <DialogTitle>새 데일리 시트 만들기</DialogTitle>
-                <DialogDescription>
-                  새로운 데일리 시트를 생성합니다.
-                </DialogDescription>
-              </DialogHeader>
-              <div className="grid gap-4 py-4">
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="sheet-date" className="text-right">
-                    날짜
-                  </Label>
-                  <Input
-                    id="sheet-date"
-                    type="date"
-                    value={newSheetDate}
-                    onChange={(e) => setNewSheetDate(e.target.value)}
-                    className="col-span-3"
-                  />
+          {userRole === 'mentor' && (
+            <Dialog>
+              <DialogTrigger asChild>
+                <Button className="bg-black text-white hover:bg-gray-800">
+                  <Plus className="w-4 h-4 mr-2" />
+                  새 데일리 시트 만들기
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="max-w-md">
+                <DialogHeader>
+                  <DialogTitle>새 데일리 시트 만들기</DialogTitle>
+                  <DialogDescription>
+                    새로운 데일리 시트를 생성합니다.
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="sheet-date" className="text-right">
+                      날짜
+                    </Label>
+                    <Input
+                      id="sheet-date"
+                      type="date"
+                      value={newSheetDate}
+                      onChange={(e) => setNewSheetDate(e.target.value)}
+                      className="col-span-3"
+                    />
+                  </div>
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="sheet-title" className="text-right">
+                      제목
+                    </Label>
+                    <Input
+                      id="sheet-title"
+                      value={newSheetTitle}
+                      onChange={(e) => setNewSheetTitle(e.target.value)}
+                      className="col-span-3"
+                      placeholder="수업 제목을 입력하세요"
+                    />
+                  </div>
                 </div>
-                <div className="grid grid-cols-4 items-center gap-4">
-                  <Label htmlFor="sheet-title" className="text-right">
-                    제목
-                  </Label>
-                  <Input
-                    id="sheet-title"
-                    value={newSheetTitle}
-                    onChange={(e) => setNewSheetTitle(e.target.value)}
-                    className="col-span-3"
-                    placeholder="수업 제목을 입력하세요"
-                  />
-                </div>
-              </div>
-              <Button onClick={createNewSheet} className="w-full bg-black text-white hover:bg-gray-800">
-                시트 생성하기
-              </Button>
-            </DialogContent>
-          </Dialog>
+                <Button onClick={createNewSheet} className="w-full bg-black text-white hover:bg-gray-800">
+                  시트 생성하기
+                </Button>
+              </DialogContent>
+            </Dialog>
+          )}
         </div>
 
         {/* Daily Sheets Grid */}
