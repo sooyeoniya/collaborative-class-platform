@@ -1,3 +1,4 @@
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -17,7 +18,7 @@ All colors MUST be HSL.
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
 
-    --primary: 222.2 47.4% 11.2%;
+    --primary: 219 84% 53%;
     --primary-foreground: 210 40% 98%;
 
     --secondary: 210 40% 96.1%;
@@ -39,20 +40,19 @@ All colors MUST be HSL.
     --radius: 0.5rem;
 
     --sidebar-background: 0 0% 98%;
-
     --sidebar-foreground: 240 5.3% 26.1%;
-
     --sidebar-primary: 240 5.9% 10%;
-
     --sidebar-primary-foreground: 0 0% 98%;
-
     --sidebar-accent: 240 4.8% 95.9%;
-
     --sidebar-accent-foreground: 240 5.9% 10%;
-
     --sidebar-border: 220 13% 91%;
-
     --sidebar-ring: 217.2 91.2% 59.8%;
+
+    /* Custom colors for education theme */
+    --education-blue: 219 84% 53%;
+    --education-green: 142 76% 36%;
+    --education-purple: 262 100% 75%;
+    --education-orange: 31 81% 56%;
   }
 
   .dark {
@@ -101,5 +101,20 @@ All colors MUST be HSL.
 
   body {
     @apply bg-background text-foreground;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+}
+
+@layer utilities {
+  .gradient-education {
+    background: linear-gradient(135deg, hsl(var(--education-blue)) 0%, hsl(var(--education-purple)) 100%);
+  }
+  
+  .gradient-mentor {
+    background: linear-gradient(135deg, hsl(var(--education-blue)) 0%, hsl(var(--education-green)) 100%);
+  }
+  
+  .gradient-student {
+    background: linear-gradient(135deg, hsl(var(--education-orange)) 0%, hsl(var(--education-purple)) 100%);
   }
 }
