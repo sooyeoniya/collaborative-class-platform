@@ -1,62 +1,83 @@
-
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { UserCheck, AlertCircle } from "lucide-react";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 
 interface LoginFormProps {
-  onLogin: (role: 'mentor' | 'student', name: string) => void;
+  onLogin: (role: "mentor" | "student", name: string) => void;
 }
 
 const LoginForm = ({ onLogin }: LoginFormProps) => {
-  const [nameInput, setNameInput] = useState('');
-  const [phoneInput, setPhoneInput] = useState('');
-  const [error, setError] = useState('');
+  const [nameInput, setNameInput] = useState("");
+  const [phoneInput, setPhoneInput] = useState("");
+  const [error, setError] = useState("");
 
   // Mock user data
   const mockUsers = {
     mentor: {
-      name: '김지훈',
-      phone: '010-1234-5678'
+      name: "김지훈",
+      phone: "010-1234-5678",
     },
     students: [
-      { name: '박소연', phone: '010-2345-6789' },
-      { name: '이민준', phone: '010-3456-7890' },
-      { name: '정하은', phone: '010-4567-8901' }
-    ]
+      { name: "박소연", phone: "010-2345-6789" },
+      { name: "이민준", phone: "010-3456-7890" },
+      { name: "정하은", phone: "010-4567-8901" },
+    ],
   };
 
-  const handleLogin = (role: 'mentor' | 'student') => {
-    setError('');
-    
+  const handleLogin = (role: "mentor" | "student") => {
+    setError("");
+
     if (!nameInput && !phoneInput) {
-      setError('이름 또는 전화번호를 입력해주세요.');
+      setError("이름 또는 전화번호를 입력해주세요.");
       return;
     }
 
-    if (role === 'mentor') {
-      const isValidMentor = 
-        nameInput === mockUsers.mentor.name || 
+    if (role === "mentor") {
+      const isValidMentor =
+        nameInput === mockUsers.mentor.name ||
         phoneInput === mockUsers.mentor.phone;
-      
+
       if (isValidMentor) {
-        onLogin('mentor', mockUsers.mentor.name);
+        // localStorage에 로그인 정보 저장
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            role: "mentor",
+            name: mockUsers.mentor.name,
+          })
+        );
+        onLogin("mentor", mockUsers.mentor.name);
       } else {
-        setError('멘토 계정 정보가 일치하지 않습니다.');
+        setError("멘토 계정 정보가 일치하지 않습니다.");
       }
     } else {
-      const validStudent = mockUsers.students.find(student => 
-        nameInput === student.name || phoneInput === student.phone
+      const validStudent = mockUsers.students.find(
+        (student) => nameInput === student.name || phoneInput === student.phone
       );
-      
+
       if (validStudent) {
-        onLogin('student', validStudent.name);
+        // localStorage에 로그인 정보 저장
+        localStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            role: "student",
+            name: validStudent.name,
+          })
+        );
+        onLogin("student", validStudent.name);
       } else {
-        setError('수강생 계정 정보가 일치하지 않습니다.');
+        setError("수강생 계정 정보가 일치하지 않습니다.");
       }
     }
   };
@@ -68,7 +89,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
           <TabsTrigger value="mentor">멘토</TabsTrigger>
           <TabsTrigger value="student">수강생</TabsTrigger>
         </TabsList>
-        
+
         <TabsContent value="mentor">
           <Card>
             <CardHeader>
@@ -102,8 +123,8 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Button 
-                onClick={() => handleLogin('mentor')}
+              <Button
+                onClick={() => handleLogin("mentor")}
                 className="w-full gradient-mentor text-white hover:opacity-90"
               >
                 <UserCheck className="w-4 h-4 mr-2" />
@@ -112,7 +133,7 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
             </CardContent>
           </Card>
         </TabsContent>
-        
+
         <TabsContent value="student">
           <Card>
             <CardHeader>
@@ -146,8 +167,8 @@ const LoginForm = ({ onLogin }: LoginFormProps) => {
                   <AlertDescription>{error}</AlertDescription>
                 </Alert>
               )}
-              <Button 
-                onClick={() => handleLogin('student')}
+              <Button
+                onClick={() => handleLogin("student")}
                 className="w-full gradient-student text-white hover:opacity-90"
               >
                 <UserCheck className="w-4 h-4 mr-2" />
