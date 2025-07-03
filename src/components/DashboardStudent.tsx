@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -16,6 +17,8 @@ interface DashboardStudentProps {
 const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
   const navigate = useNavigate();
   const [inviteCode, setInviteCode] = useState('');
+  const [previewSpace, setPreviewSpace] = useState<any>(null);
+  const [isJoinDialogOpen, setIsJoinDialogOpen] = useState(false);
 
   // Mock data
   const mockSpaces = [
@@ -47,28 +50,58 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
     }
   ];
 
-  const handleJoinSpace = () => {
-    alert(`초대 코드 ${inviteCode}로 수업에 참여합니다!`);
-    // Implement actual join space logic here
+  const handlePreviewSpace = () => {
+    // Mock preview based on invite code
+    const mockPreview = {
+      'REACT2024': {
+        name: '레벨 1 React 마스터 과정',
+        category: 'React',
+        instructor: '김지훈',
+        type: '수업',
+        studentCount: 3
+      },
+      'VUE2024': {
+        name: '레벨 2 Vue.js 정복',
+        category: 'Vue.js',
+        instructor: '김지훈',
+        type: '수업',
+        studentCount: 5
+      }
+    };
+    
+    const preview = mockPreview[inviteCode as keyof typeof mockPreview];
+    setPreviewSpace(preview || null);
   };
 
-  const navigateToSheet = (spaceId: string, date: string) => {
-    navigate(`/space/${spaceId}/sheet/${date}`);
+  const handleJoinSpace = () => {
+    if (previewSpace) {
+      console.log(`${previewSpace.name}에 참여합니다!`);
+      setIsJoinDialogOpen(false);
+      setInviteCode('');
+      setPreviewSpace(null);
+    }
+  };
+
+  const navigateToSpaceDetail = (spaceId: string) => {
+    navigate(`/space/${spaceId}`);
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-orange-50 via-white to-purple-50">
+    <div className="min-h-screen bg-gray-50">
       {/* Header */}
       <header className="bg-white border-b border-gray-200 py-4">
         <div className="container mx-auto px-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-4">
-              <BookOpen className="w-6 h-6 text-orange-500" />
-              <h1 className="text-xl font-bold">EduSheet</h1>
+              <div className="w-10 h-10 bg-black rounded-xl flex items-center justify-center">
+                <BookOpen className="w-5 h-5 text-white" />
+              </div>
+              <h1 className="text-xl font-bold text-gray-900">EduSheet</h1>
             </div>
-            <nav>
-              {/* You can add navigation links here if needed */}
-            </nav>
+            <Button onClick={onLogout} variant="outline" className="flex items-center gap-2 border-gray-300 text-gray-700 hover:bg-gray-50">
+              <LogOut className="w-4 h-4" />
+              로그아웃
+            </Button>
           </div>
         </div>
       </header>
@@ -79,49 +112,45 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
             <h1 className="text-3xl font-bold text-gray-900">수강생 대시보드</h1>
             <p className="text-gray-600 mt-2">안녕하세요, {userName}님! 오늘도 열심히 학습해보세요.</p>
           </div>
-          <Button onClick={onLogout} variant="outline" className="flex items-center gap-2">
-            <LogOut className="w-4 h-4" />
-            로그아웃
-          </Button>
         </div>
 
         {/* Stats Cards */}
         <section className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-          <Card className="bg-blue-50 hover:shadow-lg transition-shadow">
+          <Card className="bg-white border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">총 학습 시간</CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-900">총 학습 시간</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-blue-700">45 시간</div>
+              <div className="text-4xl font-bold text-gray-900">45 시간</div>
               <p className="text-sm text-gray-500 mt-2">이번 달 학습 시간: 12 시간</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-green-50 hover:shadow-lg transition-shadow">
+          <Card className="bg-white border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">완료한 시트</CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-900">완료한 시트</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-green-700">23 개</div>
+              <div className="text-4xl font-bold text-gray-900">23 개</div>
               <p className="text-sm text-gray-500 mt-2">이번 달 완료: 8 개</p>
             </CardContent>
           </Card>
 
-          <Card className="bg-orange-50 hover:shadow-lg transition-shadow">
+          <Card className="bg-white border-gray-200 hover:shadow-lg transition-shadow">
             <CardHeader>
-              <CardTitle className="text-lg font-semibold">참여 중인 수업</CardTitle>
+              <CardTitle className="text-lg font-semibold text-gray-900">참여 중인 수업</CardTitle>
             </CardHeader>
             <CardContent>
-              <div className="text-4xl font-bold text-orange-700">2 개</div>
+              <div className="text-4xl font-bold text-gray-900">2 개</div>
               <p className="text-sm text-gray-500 mt-2">최근 참여 수업: React 마스터 과정</p>
             </CardContent>
           </Card>
         </section>
 
         {/* Join Space Dialog */}
-        <Dialog>
+        <Dialog open={isJoinDialogOpen} onOpenChange={setIsJoinDialogOpen}>
           <DialogTrigger asChild>
-            <Button className="mb-8 gradient-student text-white hover:opacity-90 flex items-center gap-2">
+            <Button className="mb-8 bg-black text-white hover:bg-gray-800 flex items-center gap-2">
               <UserPlus className="w-4 h-4" />
               수업 참여하기
             </Button>
@@ -143,10 +172,36 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
                   value={inviteCode}
                   onChange={(e) => setInviteCode(e.target.value)}
                   className="col-span-3"
+                  placeholder="REACT2024"
                 />
               </div>
+              <Button onClick={handlePreviewSpace} variant="outline" className="w-full border-gray-300 text-gray-700 hover:bg-gray-50">
+                공간 정보 미리보기
+              </Button>
+              
+              {previewSpace && (
+                <Card className="bg-gray-50 border-gray-200">
+                  <CardHeader className="pb-3">
+                    <CardTitle className="text-lg text-gray-900">{previewSpace.name}</CardTitle>
+                    <CardDescription className="text-gray-600">멘토: {previewSpace.instructor}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div className="space-y-2">
+                      <div className="flex items-center gap-2">
+                        <Badge className="bg-black text-white">{previewSpace.category}</Badge>
+                        <Badge variant="outline" className="border-gray-300 text-gray-700">{previewSpace.type}</Badge>
+                      </div>
+                      <p className="text-sm text-gray-600">현재 {previewSpace.studentCount}명이 참여 중입니다.</p>
+                    </div>
+                  </CardContent>
+                </Card>
+              )}
             </div>
-            <Button onClick={handleJoinSpace} className="w-full gradient-student text-white">
+            <Button 
+              onClick={handleJoinSpace} 
+              disabled={!previewSpace}
+              className="w-full bg-black text-white hover:bg-gray-800 disabled:bg-gray-300"
+            >
               참여하기
             </Button>
           </DialogContent>
@@ -155,19 +210,19 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
         {/* My Spaces */}
         <section className="mb-8">
           <div className="flex items-center justify-between mb-6">
-            <h2 className="text-2xl font-bold">참여 중인 수업</h2>
+            <h2 className="text-2xl font-bold text-gray-900">참여 중인 수업</h2>
           </div>
           
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {mockSpaces.map((space) => (
-              <Card key={space.id} className="hover:shadow-lg transition-shadow">
+              <Card key={space.id} className="bg-white border-gray-200 hover:shadow-lg transition-shadow">
                 <CardHeader>
                   <div className="flex items-center justify-between">
-                    <Badge className="gradient-student text-white">{space.category}</Badge>
-                    <Badge variant="outline">{space.studentCount}명 참여</Badge>
+                    <Badge className="bg-black text-white">{space.category}</Badge>
+                    <Badge variant="outline" className="border-gray-300 text-gray-700">{space.studentCount}명 참여</Badge>
                   </div>
-                  <CardTitle className="text-lg">{space.name}</CardTitle>
-                  <CardDescription>멘토: {space.instructor}</CardDescription>
+                  <CardTitle className="text-lg text-gray-900">{space.name}</CardTitle>
+                  <CardDescription className="text-gray-600">멘토: {space.instructor}</CardDescription>
                 </CardHeader>
                 <CardContent>
                   <div className="space-y-3">
@@ -176,15 +231,15 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
                       {space.period}
                     </div>
                     <div className="space-y-2">
-                      <h4 className="text-sm font-medium">최근 데일리 시트</h4>
+                      <h4 className="text-sm font-medium text-gray-900">최근 데일리 시트</h4>
                       {space.recentSheets.map((sheet) => (
-                        <div key={sheet.date} className="flex items-center justify-between p-2 bg-gray-50 rounded">
-                          <span className="text-sm">{sheet.date}</span>
+                        <div key={sheet.date} className="flex items-center justify-between p-2 bg-gray-50 rounded border">
+                          <span className="text-sm text-gray-700">{sheet.date}</span>
                           <Button 
                             size="sm" 
                             variant="ghost"
-                            onClick={() => navigateToSheet(space.id, sheet.date)}
-                            className="text-xs"
+                            onClick={() => navigate(`/space/${space.id}/sheet/${sheet.date}`)}
+                            className="text-xs text-gray-600 hover:text-gray-900"
                           >
                             참여하기
                           </Button>
@@ -192,8 +247,8 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
                       ))}
                     </div>
                     <Button 
-                      className="w-full gradient-student text-white hover:opacity-90"
-                      onClick={() => navigateToSheet(space.id, '2024-01-15')}
+                      className="w-full bg-black text-white hover:bg-gray-800"
+                      onClick={() => navigateToSpaceDetail(space.id)}
                     >
                       수업 참여하기
                     </Button>
@@ -206,14 +261,14 @@ const DashboardStudent = ({ userName, onLogout }: DashboardStudentProps) => {
 
         {/* Recent Activities */}
         <section>
-          <h2 className="text-2xl font-bold mb-6">최근 활동</h2>
-          <Card>
+          <h2 className="text-2xl font-bold mb-6 text-gray-900">최근 활동</h2>
+          <Card className="bg-white border-gray-200">
             <CardHeader>
-              <CardTitle>오늘의 활동 요약</CardTitle>
-              <CardDescription>최근 학습 활동을 한눈에 확인하세요.</CardDescription>
+              <CardTitle className="text-gray-900">오늘의 활동 요약</CardTitle>
+              <CardDescription className="text-gray-600">최근 학습 활동을 한눈에 확인하세요.</CardDescription>
             </CardHeader>
             <CardContent>
-              <ul className="list-disc pl-5">
+              <ul className="list-disc pl-5 space-y-1 text-gray-700">
                 <li>React 마스터 과정 - 데일리 시트 "2024-01-15" 완료</li>
                 <li>Vue.js 정복 - "컴포넌트 통신" 챕터 학습</li>
                 <li>커뮤니티 포럼에 "React Hook 질문" 게시</li>
